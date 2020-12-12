@@ -16,6 +16,9 @@ class HackerNewsBloc {
   Stream<UnmodifiableListView<Article>> get articles => _articlesSubject.stream;
   final _articlesSubject = BehaviorSubject<UnmodifiableListView<Article>>();
 
+  Stream<bool> get isLoading => _isLoadingSubject.stream;
+  final _isLoadingSubject = BehaviorSubject<bool>();
+
   Sink<StoriesType> get storiesType => _storiesTypeController.sink;
   final _storiesTypeController = StreamController<StoriesType>();
 
@@ -25,7 +28,6 @@ class HackerNewsBloc {
         _getArticlesAndUpdate(StoriesType.topStories);
 
         _storiesTypeController.stream.listen((storiesType) {
-          _articlesSubject.add(UnmodifiableListView<Article>([]));
           _getArticlesAndUpdate(storiesType);
         });
       }
@@ -35,6 +37,7 @@ class HackerNewsBloc {
   void close() {
     _articlesSubject.close();
     _storiesTypeController.close();
+    _isLoadingSubject.close();
   }
 
   List<int> _ids;
@@ -64,9 +67,11 @@ class HackerNewsBloc {
   }
 
   void _getArticlesAndUpdate(StoriesType storiesType) async {
+    _isLoadingSubject.add(true);
     await _getIds(storiesType);
     final futureArticles = _ids.map(_getArticle);
     final articles = await Future.wait(futureArticles);
     _articlesSubject.add(UnmodifiableListView<Article>(articles));
+    _isLoadingSubject.add(false);
   }
 }

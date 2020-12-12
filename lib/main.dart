@@ -80,13 +80,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Hero(
-          tag: 'icon',
-          child: Icon(
-            FontAwesomeIcons.hackerNewsSquare,
-            color: Colors.deepOrange,
-            size: 100.0,
-          ),
+        child: Icon(
+          FontAwesomeIcons.hackerNewsSquare,
+          color: Colors.deepOrange,
+          size: 100.0,
         ),
       ),
     );
@@ -107,12 +104,22 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     final bloc = BlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
-        leading: Hero(
-          tag: 'icon',
-          child: Opacity(
-            opacity: .5,
-            child: Icon(FontAwesomeIcons.hackerNewsSquare),
-          ),
+        leading: StreamBuilder<bool>(
+          stream: bloc.isLoading,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data)
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: CircularProgressIndicator(),
+                );
+              return Opacity(
+                opacity: .5,
+                child: Icon(FontAwesomeIcons.hackerNewsSquare),
+              );
+            }
+            return Container();
+          },
         ),
         elevation: 0.0,
         title: const Text(
@@ -197,21 +204,27 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         stream: bloc.articles,
         initialData: UnmodifiableListView<Article>([]),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(
-              child: CircularProgressIndicator(),
+          if (snapshot.hasData)
+            return RefreshIndicator(
+              onRefresh: () async {
+                bloc.storiesType.add(_currentIndex == 0 ? StoriesType.topStories : StoriesType.newStories);
+              },
+              child: ListView(
+                children: snapshot.data.map(_buildItem).toList(),
+              ),
             );
-          return ListView(
-            children: snapshot.data.map(_buildItem).toList(),
-          );
+          return Container();
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0.0,
         selectedItemColor: Theme.of(context).accentColor,
         currentIndex: _currentIndex,
         onTap: (index) {
-          bloc.storiesType.add(
-              index == 0 ? StoriesType.topStories : StoriesType.newStories);
+          if (index != _currentIndex) {
+            bloc.storiesType.add(
+                index == 0 ? StoriesType.topStories : StoriesType.newStories);
+          }
           setState(() {
             _currentIndex = index;
           });
