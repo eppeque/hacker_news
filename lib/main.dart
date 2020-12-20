@@ -104,22 +104,9 @@ class _HomeState extends State<Home> {
     final bloc = BlocProvider.of(context).bloc;
     return Scaffold(
       appBar: AppBar(
-        leading: StreamBuilder<bool>(
-          stream: bloc.isLoading,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data)
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: CircularProgressIndicator(),
-                );
-              return Opacity(
-                opacity: .5,
-                child: Icon(FontAwesomeIcons.hackerNewsSquare),
-              );
-            }
-            return Container();
-          },
+        leading: Opacity(
+          opacity: .5,
+          child: Icon(FontAwesomeIcons.hackerNewsSquare),
         ),
         elevation: 0.0,
         title: const Text(
@@ -200,20 +187,24 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: StreamBuilder<UnmodifiableListView<Article>>(
-        stream: bloc.articles,
-        initialData: UnmodifiableListView<Article>([]),
+      body: StreamBuilder<bool>(
+        stream: bloc.isLoading,
         builder: (context, snapshot) {
-          if (snapshot.hasData)
-            return RefreshIndicator(
-              onRefresh: () async {
-                bloc.storiesType.add(_currentIndex == 0 ? StoriesType.topStories : StoriesType.newStories);
-              },
-              child: ListView(
-                children: snapshot.data.map(_buildItem).toList(),
-              ),
+          if (snapshot.data)
+            return Center(
+              child: CircularProgressIndicator(),
             );
-          return Container();
+          return StreamBuilder<UnmodifiableListView<Article>>(
+            stream: bloc.articles,
+            initialData: UnmodifiableListView<Article>([]),
+            builder: (context, snapshot) {
+              if (snapshot.hasData)
+                return ListView(
+                  children: snapshot.data.map(_buildItem).toList(),
+                );
+              return Container();
+            },
+          );
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -248,28 +239,39 @@ class _HomeState extends State<Home> {
       padding: const EdgeInsets.all(16.0),
       child: ExpansionTile(
         title: Text(
-          article.title,
+          article.title ?? 'This article has no title',
           style: TextStyle(fontSize: 24.0),
         ),
-        subtitle: Text(article.by),
+        subtitle: Text(article.by ?? 'No author provided'),
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              IconButton(
-                tooltip: 'Read full article',
-                icon: Icon(Icons.launch),
-                color: Theme.of(context).accentColor,
-                onPressed: () => Navigator.of(context).push(
-                  CupertinoPageRoute(
-                    builder: (context) => WebviewPage(
-                      by: article.by,
-                      url: article.url,
-                    ),
-                  ),
-                ),
+              article.url != null
+                  ? IconButton(
+                      tooltip: 'Read full article',
+                      icon: Icon(Icons.launch),
+                      color: Theme.of(context).accentColor,
+                      onPressed: () => Navigator.of(context).push(
+                        CupertinoPageRoute(
+                          builder: (context) => WebviewPage(
+                            by: article.by,
+                            url: article.url,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(),
+              Padding(
+                padding: article.url != null
+                    ? const EdgeInsets.all(0.0)
+                    : const EdgeInsets.all(16.0),
+                child: article.descendants != null
+                    ? Text(article.descendants > 1
+                        ? '${article.descendants} comments'
+                        : '${article.descendants} comment')
+                    : Text('No comments'),
               ),
-              Text('${article.descendants} comment(s)'),
             ],
           ),
         ],
