@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:share/share.dart';
 
 import 'theme_provider.dart';
 import 'hn_bloc.dart';
@@ -262,6 +263,12 @@ class _HomeState extends State<Home> {
                       ),
                     )
                   : Container(),
+                  article.url != null ? IconButton(
+                    tooltip: 'Share the article',
+                    icon: Icon(Icons.share_outlined),
+                    color: Theme.of(context).accentColor,
+                    onPressed: () => Share.share('Check out this article from ${article.by} : ${article.url}'),
+                  ) : Container(),
               Padding(
                 padding: article.url != null
                     ? const EdgeInsets.all(0.0)
