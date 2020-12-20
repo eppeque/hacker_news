@@ -81,10 +81,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Icon(
-          FontAwesomeIcons.hackerNewsSquare,
-          color: Colors.deepOrange,
-          size: 100.0,
+        child: Hero(
+          tag: 'icon',
+          child: Icon(
+            FontAwesomeIcons.hackerNewsSquare,
+            color: Colors.deepOrange,
+            size: 100.0,
+          ),
         ),
       ),
     );
@@ -107,7 +110,10 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         leading: Opacity(
           opacity: .5,
-          child: Icon(FontAwesomeIcons.hackerNewsSquare),
+          child: Hero(
+            tag: 'icon',
+            child: Icon(FontAwesomeIcons.hackerNewsSquare),
+          ),
         ),
         elevation: 0.0,
         title: const Text(
@@ -263,12 +269,15 @@ class _HomeState extends State<Home> {
                       ),
                     )
                   : Container(),
-                  article.url != null ? IconButton(
-                    tooltip: 'Share the article',
-                    icon: Icon(Icons.share_outlined),
-                    color: Theme.of(context).accentColor,
-                    onPressed: () => Share.share('Check out this article from ${article.by} : ${article.url}'),
-                  ) : Container(),
+              article.url != null
+                  ? IconButton(
+                      tooltip: 'Share the article',
+                      icon: Icon(Icons.share_outlined),
+                      color: Theme.of(context).accentColor,
+                      onPressed: () => Share.share(
+                          'Check out this article from ${article.by} : ${article.url}'),
+                    )
+                  : Container(),
               Padding(
                 padding: article.url != null
                     ? const EdgeInsets.all(0.0)
