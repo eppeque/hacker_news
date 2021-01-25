@@ -30,7 +30,7 @@ abstract class Article implements Built<Article, ArticleBuilder> {
   String get text;
 
   @nullable
-  bool get daed;
+  bool get dead;
 
   @nullable
   int get parent;

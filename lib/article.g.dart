@@ -54,10 +54,10 @@ class _$ArticleSerializer implements StructuredSerializer<Article> {
         ..add(serializers.serialize(object.text,
             specifiedType: const FullType(String)));
     }
-    if (object.daed != null) {
+    if (object.dead != null) {
       result
-        ..add('daed')
-        ..add(serializers.serialize(object.daed,
+        ..add('dead')
+        ..add(serializers.serialize(object.dead,
             specifiedType: const FullType(bool)));
     }
     if (object.parent != null) {
@@ -148,8 +148,8 @@ class _$ArticleSerializer implements StructuredSerializer<Article> {
           result.text = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'daed':
-          result.daed = serializers.deserialize(value,
+        case 'dead':
+          result.dead = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;
         case 'parent':
@@ -209,7 +209,7 @@ class _$Article extends Article {
   @override
   final String text;
   @override
-  final bool daed;
+  final bool dead;
   @override
   final int parent;
   @override
@@ -237,7 +237,7 @@ class _$Article extends Article {
       this.by,
       this.time,
       this.text,
-      this.daed,
+      this.dead,
       this.parent,
       this.poll,
       this.kids,
@@ -265,7 +265,7 @@ class _$Article extends Article {
         by == other.by &&
         time == other.time &&
         text == other.text &&
-        daed == other.daed &&
+        dead == other.dead &&
         parent == other.parent &&
         poll == other.poll &&
         kids == other.kids &&
@@ -297,7 +297,7 @@ class _$Article extends Article {
                                                     by.hashCode),
                                                 time.hashCode),
                                             text.hashCode),
-                                        daed.hashCode),
+                                        dead.hashCode),
                                     parent.hashCode),
                                 poll.hashCode),
                             kids.hashCode),
@@ -317,7 +317,7 @@ class _$Article extends Article {
           ..add('by', by)
           ..add('time', time)
           ..add('text', text)
-          ..add('daed', daed)
+          ..add('dead', dead)
           ..add('parent', parent)
           ..add('poll', poll)
           ..add('kids', kids)
@@ -357,9 +357,9 @@ class ArticleBuilder implements Builder<Article, ArticleBuilder> {
   String get text => _$this._text;
   set text(String text) => _$this._text = text;
 
-  bool _daed;
-  bool get daed => _$this._daed;
-  set daed(bool daed) => _$this._daed = daed;
+  bool _dead;
+  bool get dead => _$this._dead;
+  set dead(bool dead) => _$this._dead = dead;
 
   int _parent;
   int get parent => _$this._parent;
@@ -403,7 +403,7 @@ class ArticleBuilder implements Builder<Article, ArticleBuilder> {
       _by = _$v.by;
       _time = _$v.time;
       _text = _$v.text;
-      _daed = _$v.daed;
+      _dead = _$v.dead;
       _parent = _$v.parent;
       _poll = _$v.poll;
       _kids = _$v.kids?.toBuilder();
@@ -442,7 +442,7 @@ class ArticleBuilder implements Builder<Article, ArticleBuilder> {
               by: by,
               time: time,
               text: text,
-              daed: daed,
+              dead: dead,
               parent: parent,
               poll: poll,
               kids: _kids?.build(),
