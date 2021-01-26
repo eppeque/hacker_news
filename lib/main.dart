@@ -172,7 +172,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 SizedBox(height: 16.0),
-                userSnapshot != null
+                userSnapshot.data != null
                     ? ListTile(
                         leading: const Icon(Icons.star_border),
                         title: const Text('Your Stars'),
