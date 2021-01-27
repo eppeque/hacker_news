@@ -67,11 +67,22 @@ class HackerNewsBloc {
   }
 
   void _getArticlesAndUpdate(StoriesType storiesType) async {
+    // The articles reception has started
     _isLoadingSubject.add(true);
+
+    // Get the articles ids from the Hacker News API
     await _getIds(storiesType);
+
+    // Get the article for each ID.
     final futureArticles = _ids.map(_getArticle);
+
+    // Convert to have a list of articles
     final articles = await Future.wait(futureArticles);
+
+    // Send the articles to the stream
     _articlesSubject.add(UnmodifiableListView<Article>(articles));
+
+    // The process is finished
     _isLoadingSubject.add(false);
   }
 }

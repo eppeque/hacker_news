@@ -8,6 +8,7 @@ import 'theme_provider.dart';
 
 import 'auth.dart';
 
+/// A simple function to show the modal bottom sheet (NB: It's not a widget!)
 void showSettingsPage(
     BuildContext context, ThemeProvider themeProvider, User user) {
   final auth = Auth();
@@ -83,7 +84,7 @@ void showSettingsPage(
             applicationName: 'Hacker News',
             applicationVersion: '1.0.0',
             applicationLegalese:
-                'This app is developed by Quentin Eppe. All Rights Reserved.',
+                'This app is developed by Quentin Eppe and uses the Hacker News API. All Rights Reserved.',
             applicationIcon: Icon(
               FontAwesomeIcons.hackerNewsSquare,
               color: Colors.deepOrange,

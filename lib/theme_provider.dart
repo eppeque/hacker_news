@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Class to dynamically toggle the theme. Works with the [ChangeNotifierProvider] widget in the main function.
 class ThemeProvider with ChangeNotifier {
   bool isDarkTheme;
 

@@ -167,8 +167,7 @@ class _StarsPageState extends State<StarsPage> {
                                             icon: Icon(Icons.share_outlined),
                                             color:
                                                 Theme.of(context).accentColor,
-                                            onPressed: () => Share.share(
-                                                'Check out this article from ${article.by} : ${article.url}'),
+                                            onPressed: () => Share.share(article.url),
                                           )
                                         : Container(),
                                     Padding(

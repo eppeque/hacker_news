@@ -24,15 +24,28 @@ import 'dart:collection';
 import 'dart:async';
 
 void main() async {
+  // This line is required when we have an asynchronous main function
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Firebase initialization
   await Firebase.initializeApp();
+
+  // Set phone status bar to transparent to unify app and system interface colors
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(statusBarColor: Colors.transparent),
   );
+
+  // Get the saved boolean to know if the UI should be in a dark or a light theme
   final prefs = await SharedPreferences.getInstance();
   final isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+
+  // Bloc initialization
+  // It's better to initialize this bloc in the main function to have better performances
   final hnBloc = HackerNewsBloc();
+
   runApp(
+    // The `ChangeNotifierProvider` widget is used to be able to access
+    // to the `isDarkTheme` boolean everywhere in the app with a simple provider
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(isDarkTheme: isDarkTheme),
       child: BlocProvider(
@@ -57,6 +70,8 @@ class HackerNewsApp extends StatelessWidget {
   }
 }
 
+/// This is the splash screen of the app made with **Flutter**.
+/// The native splash screen is simply white with a fade transition when the flutter side is initialized.
 class SplashScreen extends StatefulWidget {
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -66,7 +81,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    var connectivityResult;
+
+    // We verify if the user is online
+    // If he isn't we launch a no network error page
+    ConnectivityResult connectivityResult;
     Connectivity()
         .checkConnectivity()
         .then((result) => connectivityResult = result);
@@ -105,12 +123,16 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _currentIndex = 0;
+
+  // Initialize the Auth class
   final auth = Auth();
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final bloc = BlocProvider.of(context).bloc;
+
+    // The StreamBuilder allows access to the user variable throughout the widget and keep the user connected
     return StreamBuilder<User>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, userSnapshot) {
@@ -127,11 +149,14 @@ class _HomeState extends State<Home> {
                 icon: Icon(Icons.search),
                 tooltip: 'Search an article',
                 onPressed: () async {
+                  // This article is the article found by the user
+                  // We are waiting for the search page to close
                   final article = await showSearch(
                     context: context,
                     delegate: SearchPage(articles: bloc.articles),
                   );
 
+                  // If the search page closes without an article being selected, nothing needs to be done
                   if (article != null) {
                     Navigator.of(context).push(
                       CupertinoPageRoute(
@@ -205,6 +230,7 @@ class _HomeState extends State<Home> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData)
                     return ListView(
+                      // For each article we use the _buildItem function that returns an ExpansionTile
                       children: snapshot.data
                           .map((article) =>
                               _buildItem(article, userSnapshot.data))
@@ -246,6 +272,7 @@ class _HomeState extends State<Home> {
   }
 
   Widget _buildItem(Article article, User user) {
+    // This StreamBuilder allow the acces to the user data from the Firebase database
     return StreamBuilder<DocumentSnapshot>(
       stream: user != null
           ? FirebaseFirestore.instance
@@ -311,8 +338,7 @@ class _HomeState extends State<Home> {
                           tooltip: 'Share the article',
                           icon: Icon(Icons.share_outlined),
                           color: Theme.of(context).accentColor,
-                          onPressed: () => Share.share(
-                              'Check out this article from ${article.by} : ${article.url}'),
+                          onPressed: () => Share.share(article.url),
                         )
                       : Container(),
                   Padding(
@@ -335,6 +361,7 @@ class _HomeState extends State<Home> {
   }
 }
 
+/// This is the [SearchPage] that includes an app bar with a search bar, suggestions and search results
 class SearchPage extends SearchDelegate {
   final Stream<UnmodifiableListView<Article>> articles;
 
