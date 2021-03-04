@@ -21,7 +21,7 @@ class _StarsPageState extends State<StarsPage> {
   Future<List<Article>> _getArticles(List<int> ids) async {
     final futureArticles = ids.map((id) async {
       final res =
-          await http.get('https://hacker-news.firebaseio.com/v0/item/$id.json');
+          await http.get(Uri.https('hacker-news.firebaseio.com', '/v0/item/$id.json'));
 
       if (res.statusCode == 200) {
         final article = parseArticle(res.body);

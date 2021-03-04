@@ -14,7 +14,7 @@ void main() {
   });
 
   test('Parse article over network', () async {
-    final url = 'https://hacker-news.firebaseio.com/v0/item/8863.json';
+    final url = Uri.https('hacker-news.firebaseio.com', '/v0/item/8863.json');
     final res = await http.get(url);
     
     if (res.statusCode == 200) {

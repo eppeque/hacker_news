@@ -42,11 +42,11 @@ class HackerNewsBloc {
 
   List<int> _ids;
 
-  static const _baseUrl = 'https://hacker-news.firebaseio.com/v0';
+  static const _baseUrl = 'hacker-news.firebaseio.com';
 
   Future<void> _getIds(StoriesType storiesType) async {
     final type = storiesType == StoriesType.topStories ? 'topstories' : 'newstories';
-    final url = '$_baseUrl/$type.json';
+    final url = Uri.https(_baseUrl, '/v0/$type.json');
     final res = await http.get(url);
     
     if (res.statusCode == 200) {
@@ -56,7 +56,7 @@ class HackerNewsBloc {
   }
 
   Future<Article> _getArticle(int id) async {
-    final res = await http.get('https://hacker-news.firebaseio.com/v0/item/$id.json');
+    final res = await http.get(Uri.https(_baseUrl, '/v0/item/$id.json'));
 
     if (res.statusCode == 200) {
       final article = parseArticle(res.body);

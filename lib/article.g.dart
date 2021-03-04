@@ -18,97 +18,107 @@ class _$ArticleSerializer implements StructuredSerializer<Article> {
   Iterable<Object> serialize(Serializers serializers, Article object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[];
-    if (object.id != null) {
+    Object value;
+    value = object.id;
+    if (value != null) {
       result
         ..add('id')
-        ..add(serializers.serialize(object.id,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.deleted != null) {
+    value = object.deleted;
+    if (value != null) {
       result
         ..add('deleted')
-        ..add(serializers.serialize(object.deleted,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
-    if (object.type != null) {
+    value = object.type;
+    if (value != null) {
       result
         ..add('type')
-        ..add(serializers.serialize(object.type,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.by != null) {
+    value = object.by;
+    if (value != null) {
       result
         ..add('by')
-        ..add(serializers.serialize(object.by,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.time != null) {
+    value = object.time;
+    if (value != null) {
       result
         ..add('time')
-        ..add(serializers.serialize(object.time,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.text != null) {
+    value = object.text;
+    if (value != null) {
       result
         ..add('text')
-        ..add(serializers.serialize(object.text,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.dead != null) {
+    value = object.dead;
+    if (value != null) {
       result
         ..add('dead')
-        ..add(serializers.serialize(object.dead,
-            specifiedType: const FullType(bool)));
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
-    if (object.parent != null) {
+    value = object.parent;
+    if (value != null) {
       result
         ..add('parent')
-        ..add(serializers.serialize(object.parent,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.poll != null) {
+    value = object.poll;
+    if (value != null) {
       result
         ..add('poll')
-        ..add(serializers.serialize(object.poll,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.kids != null) {
+    value = object.kids;
+    if (value != null) {
       result
         ..add('kids')
-        ..add(serializers.serialize(object.kids,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(int)])));
     }
-    if (object.url != null) {
+    value = object.url;
+    if (value != null) {
       result
         ..add('url')
-        ..add(serializers.serialize(object.url,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.score != null) {
+    value = object.score;
+    if (value != null) {
       result
         ..add('score')
-        ..add(serializers.serialize(object.score,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    if (object.title != null) {
+    value = object.title;
+    if (value != null) {
       result
         ..add('title')
-        ..add(serializers.serialize(object.title,
+        ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    if (object.parts != null) {
+    value = object.parts;
+    if (value != null) {
       result
         ..add('parts')
-        ..add(serializers.serialize(object.parts,
+        ..add(serializers.serialize(value,
             specifiedType:
                 const FullType(BuiltList, const [const FullType(int)])));
     }
-    if (object.descendants != null) {
+    value = object.descendants;
+    if (value != null) {
       result
         ..add('descendants')
-        ..add(serializers.serialize(object.descendants,
-            specifiedType: const FullType(int)));
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     return result;
   }
@@ -122,7 +132,7 @@ class _$ArticleSerializer implements StructuredSerializer<Article> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final dynamic value = iterator.current;
+      final Object value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
@@ -396,22 +406,23 @@ class ArticleBuilder implements Builder<Article, ArticleBuilder> {
   ArticleBuilder();
 
   ArticleBuilder get _$this {
-    if (_$v != null) {
-      _id = _$v.id;
-      _deleted = _$v.deleted;
-      _type = _$v.type;
-      _by = _$v.by;
-      _time = _$v.time;
-      _text = _$v.text;
-      _dead = _$v.dead;
-      _parent = _$v.parent;
-      _poll = _$v.poll;
-      _kids = _$v.kids?.toBuilder();
-      _url = _$v.url;
-      _score = _$v.score;
-      _title = _$v.title;
-      _parts = _$v.parts?.toBuilder();
-      _descendants = _$v.descendants;
+    final $v = _$v;
+    if ($v != null) {
+      _id = $v.id;
+      _deleted = $v.deleted;
+      _type = $v.type;
+      _by = $v.by;
+      _time = $v.time;
+      _text = $v.text;
+      _dead = $v.dead;
+      _parent = $v.parent;
+      _poll = $v.poll;
+      _kids = $v.kids?.toBuilder();
+      _url = $v.url;
+      _score = $v.score;
+      _title = $v.title;
+      _parts = $v.parts?.toBuilder();
+      _descendants = $v.descendants;
       _$v = null;
     }
     return this;
@@ -419,9 +430,7 @@ class ArticleBuilder implements Builder<Article, ArticleBuilder> {
 
   @override
   void replace(Article other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
+    ArgumentError.checkNotNull(other, 'other');
     _$v = other as _$Article;
   }
 
