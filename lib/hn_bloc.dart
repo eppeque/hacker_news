@@ -22,7 +22,10 @@ class HackerNewsBloc {
   Sink<StoriesType> get storiesType => _storiesTypeController.sink;
   final _storiesTypeController = StreamController<StoriesType>();
 
+  HashMap<int, Article> _cachedArticles;
+
   HackerNewsBloc() {
+    _cachedArticles = HashMap<int, Article>();
     Connectivity().checkConnectivity().then((result) {
       if (result == ConnectivityResult.mobile || result == ConnectivityResult.wifi) {
         _getArticlesAndUpdate(StoriesType.topStories);
@@ -52,18 +55,23 @@ class HackerNewsBloc {
     if (res.statusCode == 200) {
       final ids = parseIds(res.body).take(10).toList();
       _ids = ids;
+    } else {
+      throw HackerNewsAPIError("Ids couldn't be fetched.");
     }
   }
 
   Future<Article> _getArticle(int id) async {
-    final res = await http.get(Uri.https(_baseUrl, '/v0/item/$id.json'));
+    if (!_cachedArticles.containsKey(id)) {
+      final res = await http.get(Uri.https(_baseUrl, '/v0/item/$id.json'));
 
-    if (res.statusCode == 200) {
-      final article = parseArticle(res.body);
-      return article;
+      if (res.statusCode == 200) {
+        final article = parseArticle(res.body);
+        _cachedArticles[id] = article;
+      } else {
+        throw HackerNewsAPIError("Article $id couldn't be fetched.");
+      }
     }
-
-    return null;
+    return _cachedArticles[id];
   }
 
   void _getArticlesAndUpdate(StoriesType storiesType) async {
@@ -85,4 +93,10 @@ class HackerNewsBloc {
     // The process is finished
     _isLoadingSubject.add(false);
   }
+}
+
+class HackerNewsAPIError extends Error {
+  final String message;
+
+  HackerNewsAPIError(this.message);
 }
