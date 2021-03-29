@@ -84,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // We verify if the user is online
     // If he isn't we launch a no network error page
-    ConnectivityResult connectivityResult;
+    ConnectivityResult? connectivityResult;
     Connectivity()
         .checkConnectivity()
         .then((result) => connectivityResult = result);
@@ -130,10 +130,10 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final bloc = BlocProvider.of(context).bloc;
+    final bloc = BlocProvider.of(context)!.bloc;
 
     // The StreamBuilder allows access to the user variable throughout the widget and keep the user connected
-    return StreamBuilder<User>(
+    return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, userSnapshot) {
         return Scaffold(
@@ -161,8 +161,8 @@ class _HomeState extends State<Home> {
                     Navigator.of(context).push(
                       CupertinoPageRoute(
                         builder: (context) => WebviewPage(
-                          by: article.by,
-                          url: article.url,
+                          title: article.title!,
+                          url: article.url!,
                         ),
                       ),
                     );
@@ -220,7 +220,7 @@ class _HomeState extends State<Home> {
             stream: bloc.isLoading,
             initialData: true,
             builder: (context, loadingSnapshot) {
-              if (loadingSnapshot.data)
+              if (loadingSnapshot.data!)
                 return Center(
                   child: CircularProgressIndicator(),
                 );
@@ -231,7 +231,7 @@ class _HomeState extends State<Home> {
                   if (snapshot.hasData)
                     return ListView(
                       // For each article we use the _buildItem function that returns an ExpansionTile
-                      children: snapshot.data
+                      children: snapshot.data!
                           .map((article) =>
                               _buildItem(article, userSnapshot.data))
                           .toList(),
@@ -271,7 +271,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildItem(Article article, User user) {
+  Widget _buildItem(Article article, User? user) {
     // This StreamBuilder allow the acces to the user data from the Firebase database
     return StreamBuilder<DocumentSnapshot>(
       stream: user != null
@@ -283,8 +283,8 @@ class _HomeState extends State<Home> {
       builder: (context, snapshot) {
         bool isStar = false;
         if (snapshot.hasData) {
-          final List<int> stars = List<int>.from(snapshot.data['stars']);
-          isStar = stars.contains(article.id);
+          final List<int> stars = List<int>.from(snapshot.data!['stars']);
+          isStar = stars.contains(article.id!);
         }
         return Padding(
           padding: const EdgeInsets.all(16.0),
@@ -299,11 +299,11 @@ class _HomeState extends State<Home> {
                           .doc(user.uid);
                       if (isStar) {
                         docRef.update({
-                          'stars': FieldValue.arrayRemove([article.id]),
+                          'stars': FieldValue.arrayRemove([article.id!]),
                         });
                       } else {
                         docRef.update({
-                          'stars': FieldValue.arrayUnion([article.id]),
+                          'stars': FieldValue.arrayUnion([article.id!]),
                         });
                       }
                     },
@@ -326,8 +326,8 @@ class _HomeState extends State<Home> {
                           onPressed: () => Navigator.of(context).push(
                             CupertinoPageRoute(
                               builder: (context) => WebviewPage(
-                                by: article.by,
-                                url: article.url,
+                                title: article.title!,
+                                url: article.url!,
                               ),
                             ),
                           ),
@@ -338,7 +338,7 @@ class _HomeState extends State<Home> {
                           tooltip: 'Share the article',
                           icon: Icon(Icons.share_outlined),
                           color: Theme.of(context).accentColor,
-                          onPressed: () => Share.share(article.url),
+                          onPressed: () => Share.share(article.url!),
                         )
                       : Container(),
                   Padding(
@@ -346,7 +346,7 @@ class _HomeState extends State<Home> {
                         ? const EdgeInsets.all(0.0)
                         : const EdgeInsets.all(16.0),
                     child: article.descendants != null
-                        ? Text(article.descendants > 1
+                        ? Text(article.descendants! > 1
                             ? '${article.descendants} comments'
                             : '${article.descendants} comment')
                         : Text('No comments'),
@@ -365,7 +365,7 @@ class _HomeState extends State<Home> {
 class SearchPage extends SearchDelegate {
   final Stream<UnmodifiableListView<Article>> articles;
 
-  SearchPage({this.articles});
+  SearchPage({required this.articles});
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -399,9 +399,9 @@ class SearchPage extends SearchDelegate {
           return Center(
             child: CircularProgressIndicator(),
           );
-        final searchedArticles = snapshot.data
+        final searchedArticles = snapshot.data!
             .where((article) =>
-                article.title.toLowerCase().contains(query.toLowerCase()))
+                article.title!.toLowerCase().contains(query.toLowerCase()))
             .toList();
         return ListView(
           children: searchedArticles
@@ -414,7 +414,7 @@ class SearchPage extends SearchDelegate {
                       color: Theme.of(context).accentColor,
                     ),
                     title: Text(
-                      article.title,
+                      article.title!,
                       style: TextStyle(fontSize: 24.0),
                     ),
                     onTap: () => close(context, article),
@@ -436,9 +436,9 @@ class SearchPage extends SearchDelegate {
           return Center(
             child: CircularProgressIndicator(),
           );
-        final searchedArticles = snapshot.data
+        final searchedArticles = snapshot.data!
             .where((article) =>
-                article.title.toLowerCase().contains(query.toLowerCase()))
+                article.title!.toLowerCase().contains(query.toLowerCase()))
             .toList();
         return ListView(
           children: searchedArticles
@@ -447,10 +447,10 @@ class SearchPage extends SearchDelegate {
                   padding: const EdgeInsets.all(16.0),
                   child: ListTile(
                     title: Text(
-                      article.title,
+                      article.title!,
                       style: TextStyle(color: Colors.blue),
                     ),
-                    onTap: () => query = article.title,
+                    onTap: () => query = article.title!,
                   ),
                 ),
               )

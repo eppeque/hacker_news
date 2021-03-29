@@ -15,10 +15,10 @@ class _$ArticleSerializer implements StructuredSerializer<Article> {
   final String wireName = 'Article';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, Article object,
+  Iterable<Object?> serialize(Serializers serializers, Article object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
-    Object value;
+    final result = <Object?>[];
+    Object? value;
     value = object.id;
     if (value != null) {
       result
@@ -124,7 +124,7 @@ class _$ArticleSerializer implements StructuredSerializer<Article> {
   }
 
   @override
-  Article deserialize(Serializers serializers, Iterable<Object> serialized,
+  Article deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ArticleBuilder();
 
@@ -132,7 +132,7 @@ class _$ArticleSerializer implements StructuredSerializer<Article> {
     while (iterator.moveNext()) {
       final key = iterator.current as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
@@ -173,7 +173,7 @@ class _$ArticleSerializer implements StructuredSerializer<Article> {
         case 'kids':
           result.kids.replace(serializers.deserialize(value,
                   specifiedType:
-                      const FullType(BuiltList, const [const FullType(int)]))
+                      const FullType(BuiltList, const [const FullType(int)]))!
               as BuiltList<Object>);
           break;
         case 'url':
@@ -191,7 +191,7 @@ class _$ArticleSerializer implements StructuredSerializer<Article> {
         case 'parts':
           result.parts.replace(serializers.deserialize(value,
                   specifiedType:
-                      const FullType(BuiltList, const [const FullType(int)]))
+                      const FullType(BuiltList, const [const FullType(int)]))!
               as BuiltList<Object>);
           break;
         case 'descendants':
@@ -207,37 +207,37 @@ class _$ArticleSerializer implements StructuredSerializer<Article> {
 
 class _$Article extends Article {
   @override
-  final int id;
+  final int? id;
   @override
-  final bool deleted;
+  final bool? deleted;
   @override
-  final String type;
+  final String? type;
   @override
-  final String by;
+  final String? by;
   @override
-  final int time;
+  final int? time;
   @override
-  final String text;
+  final String? text;
   @override
-  final bool dead;
+  final bool? dead;
   @override
-  final int parent;
+  final int? parent;
   @override
-  final int poll;
+  final int? poll;
   @override
-  final BuiltList<int> kids;
+  final BuiltList<int>? kids;
   @override
-  final String url;
+  final String? url;
   @override
-  final int score;
+  final int? score;
   @override
-  final String title;
+  final String? title;
   @override
-  final BuiltList<int> parts;
+  final BuiltList<int>? parts;
   @override
-  final int descendants;
+  final int? descendants;
 
-  factory _$Article([void Function(ArticleBuilder) updates]) =>
+  factory _$Article([void Function(ArticleBuilder)? updates]) =>
       (new ArticleBuilder()..update(updates)).build();
 
   _$Article._(
@@ -341,67 +341,67 @@ class _$Article extends Article {
 }
 
 class ArticleBuilder implements Builder<Article, ArticleBuilder> {
-  _$Article _$v;
+  _$Article? _$v;
 
-  int _id;
-  int get id => _$this._id;
-  set id(int id) => _$this._id = id;
+  int? _id;
+  int? get id => _$this._id;
+  set id(int? id) => _$this._id = id;
 
-  bool _deleted;
-  bool get deleted => _$this._deleted;
-  set deleted(bool deleted) => _$this._deleted = deleted;
+  bool? _deleted;
+  bool? get deleted => _$this._deleted;
+  set deleted(bool? deleted) => _$this._deleted = deleted;
 
-  String _type;
-  String get type => _$this._type;
-  set type(String type) => _$this._type = type;
+  String? _type;
+  String? get type => _$this._type;
+  set type(String? type) => _$this._type = type;
 
-  String _by;
-  String get by => _$this._by;
-  set by(String by) => _$this._by = by;
+  String? _by;
+  String? get by => _$this._by;
+  set by(String? by) => _$this._by = by;
 
-  int _time;
-  int get time => _$this._time;
-  set time(int time) => _$this._time = time;
+  int? _time;
+  int? get time => _$this._time;
+  set time(int? time) => _$this._time = time;
 
-  String _text;
-  String get text => _$this._text;
-  set text(String text) => _$this._text = text;
+  String? _text;
+  String? get text => _$this._text;
+  set text(String? text) => _$this._text = text;
 
-  bool _dead;
-  bool get dead => _$this._dead;
-  set dead(bool dead) => _$this._dead = dead;
+  bool? _dead;
+  bool? get dead => _$this._dead;
+  set dead(bool? dead) => _$this._dead = dead;
 
-  int _parent;
-  int get parent => _$this._parent;
-  set parent(int parent) => _$this._parent = parent;
+  int? _parent;
+  int? get parent => _$this._parent;
+  set parent(int? parent) => _$this._parent = parent;
 
-  int _poll;
-  int get poll => _$this._poll;
-  set poll(int poll) => _$this._poll = poll;
+  int? _poll;
+  int? get poll => _$this._poll;
+  set poll(int? poll) => _$this._poll = poll;
 
-  ListBuilder<int> _kids;
+  ListBuilder<int>? _kids;
   ListBuilder<int> get kids => _$this._kids ??= new ListBuilder<int>();
-  set kids(ListBuilder<int> kids) => _$this._kids = kids;
+  set kids(ListBuilder<int>? kids) => _$this._kids = kids;
 
-  String _url;
-  String get url => _$this._url;
-  set url(String url) => _$this._url = url;
+  String? _url;
+  String? get url => _$this._url;
+  set url(String? url) => _$this._url = url;
 
-  int _score;
-  int get score => _$this._score;
-  set score(int score) => _$this._score = score;
+  int? _score;
+  int? get score => _$this._score;
+  set score(int? score) => _$this._score = score;
 
-  String _title;
-  String get title => _$this._title;
-  set title(String title) => _$this._title = title;
+  String? _title;
+  String? get title => _$this._title;
+  set title(String? title) => _$this._title = title;
 
-  ListBuilder<int> _parts;
+  ListBuilder<int>? _parts;
   ListBuilder<int> get parts => _$this._parts ??= new ListBuilder<int>();
-  set parts(ListBuilder<int> parts) => _$this._parts = parts;
+  set parts(ListBuilder<int>? parts) => _$this._parts = parts;
 
-  int _descendants;
-  int get descendants => _$this._descendants;
-  set descendants(int descendants) => _$this._descendants = descendants;
+  int? _descendants;
+  int? get descendants => _$this._descendants;
+  set descendants(int? descendants) => _$this._descendants = descendants;
 
   ArticleBuilder();
 
@@ -435,7 +435,7 @@ class ArticleBuilder implements Builder<Article, ArticleBuilder> {
   }
 
   @override
-  void update(void Function(ArticleBuilder) updates) {
+  void update(void Function(ArticleBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -461,7 +461,7 @@ class ArticleBuilder implements Builder<Article, ArticleBuilder> {
               parts: _parts?.build(),
               descendants: descendants);
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'kids';
         _kids?.build();

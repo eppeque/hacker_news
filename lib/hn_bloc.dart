@@ -14,7 +14,7 @@ enum StoriesType {
 
 class HackerNewsBloc {
   Stream<UnmodifiableListView<Article>> get articles => _articlesSubject.stream;
-  final _articlesSubject = BehaviorSubject<UnmodifiableListView<Article>>();
+  final BehaviorSubject<UnmodifiableListView<Article>> _articlesSubject = BehaviorSubject<UnmodifiableListView<Article>>();
 
   Stream<bool> get isLoading => _isLoadingSubject.stream;
   final _isLoadingSubject = BehaviorSubject<bool>();
@@ -22,7 +22,7 @@ class HackerNewsBloc {
   Sink<StoriesType> get storiesType => _storiesTypeController.sink;
   final _storiesTypeController = StreamController<StoriesType>();
 
-  HashMap<int, Article> _cachedArticles;
+  late HashMap<int, Article> _cachedArticles;
 
   HackerNewsBloc() {
     _cachedArticles = HashMap<int, Article>();
@@ -43,7 +43,7 @@ class HackerNewsBloc {
     _isLoadingSubject.close();
   }
 
-  List<int> _ids;
+  late List<int> _ids;
 
   static const _baseUrl = 'hacker-news.firebaseio.com';
 
@@ -71,7 +71,7 @@ class HackerNewsBloc {
         throw HackerNewsAPIError("Article $id couldn't be fetched.");
       }
     }
-    return _cachedArticles[id];
+    return _cachedArticles[id]!;
   }
 
   void _getArticlesAndUpdate(StoriesType storiesType) async {

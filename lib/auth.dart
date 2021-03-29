@@ -4,12 +4,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 /// Contains everything to handle Google Authentication
 class Auth {
-  static Future<void> signInWithGoogle({BuildContext context}) async {
+  static Future<void> signInWithGoogle({required BuildContext context}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
 
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
 
     if (googleSignInAccount != null) {
       final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
@@ -40,7 +40,7 @@ class Auth {
     }
   }
 
-  static SnackBar customSnackBar({String content}) {
+  static SnackBar customSnackBar({required String content}) {
     return SnackBar(
       backgroundColor: Colors.black,
       content: Text(
@@ -50,7 +50,7 @@ class Auth {
     );
   }
 
-  static Future<void> signOut({BuildContext context}) async {
+  static Future<void> signOut({required BuildContext context}) async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final FirebaseAuth auth = FirebaseAuth.instance;
 

@@ -11,12 +11,12 @@ class BlocProvider extends InheritedWidget {
   final HackerNewsBloc bloc;
 
   /// Creates a provider to access to the [HackerNewsBloc] everywhere in the app using `bloc`
-  const BlocProvider({Key key, Widget child, this.bloc}) : super(key: key, child: child);
+  const BlocProvider({Key? key, required Widget child, required this.bloc}) : super(key: key, child: child);
 
   @override
   bool updateShouldNotify(covariant BlocProvider oldWidget) => bloc != oldWidget.bloc;
 
-  static BlocProvider of(BuildContext context) {
+  static BlocProvider? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType();
   }
 }

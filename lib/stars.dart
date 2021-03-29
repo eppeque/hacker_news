@@ -18,7 +18,7 @@ class _StarsPageState extends State<StarsPage> {
   final auth = Auth();
   final user = FirebaseAuth.instance.currentUser;
 
-  Future<List<Article>> _getArticles(List<int> ids) async {
+  Future<List<Article?>> _getArticles(List<int> ids) async {
     final futureArticles = ids.map((id) async {
       final res =
           await http.get(Uri.https('hacker-news.firebaseio.com', '/v0/item/$id.json'));
@@ -48,21 +48,21 @@ class _StarsPageState extends State<StarsPage> {
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('users')
-            .doc(user.uid)
+            .doc(user!.uid)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(
               child: CircularProgressIndicator(),
             );
-          return FutureBuilder<List<Article>>(
-            future: _getArticles(List<int>.from(snapshot.data['stars'])),
+          return FutureBuilder<List<Article?>>(
+            future: _getArticles(List<int>.from(snapshot.data!['stars'])),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting)
                 return Center(
                   child: CircularProgressIndicator(),
                 );
-              if (snapshot.data.isEmpty)
+              if (snapshot.data!.isEmpty)
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -84,25 +84,25 @@ class _StarsPageState extends State<StarsPage> {
                   ),
                 );
               return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
-                  final article = snapshot.data[index];
-                  return StreamBuilder<User>(
+                  final article = snapshot.data![index];
+                  return StreamBuilder<User?>(
                     stream: FirebaseAuth.instance.authStateChanges(),
                     builder: (context, userSnapshot) {
                       return StreamBuilder<DocumentSnapshot>(
                         stream: userSnapshot.data != null
                             ? FirebaseFirestore.instance
                                 .collection('users')
-                                .doc(userSnapshot.data.uid)
+                                .doc(userSnapshot.data!.uid)
                                 .snapshots()
                             : null,
                         builder: (context, starsSnapshot) {
                           bool isStar = false;
                           if (starsSnapshot.hasData) {
                             final List<int> stars =
-                                List<int>.from(starsSnapshot.data['stars']);
-                            isStar = stars.contains(article.id);
+                                List<int>.from(starsSnapshot.data!['stars']);
+                            isStar = stars.contains(article!.id);
                           }
                           return Padding(
                             padding: const EdgeInsets.all(16.0),
@@ -117,23 +117,23 @@ class _StarsPageState extends State<StarsPage> {
                                         final docRef = FirebaseFirestore
                                             .instance
                                             .collection('users')
-                                            .doc(userSnapshot.data.uid);
+                                            .doc(userSnapshot.data!.uid);
                                         if (isStar) {
                                           docRef.update({
                                             'stars': FieldValue.arrayRemove(
-                                                [article.id]),
+                                                [article!.id!]),
                                           });
                                         } else {
                                           docRef.update({
                                             'stars': FieldValue.arrayUnion(
-                                                [article.id]),
+                                                [article!.id!]),
                                           });
                                         }
                                       },
                                     )
                                   : null,
                               title: Text(
-                                article.title ?? 'This article has no title',
+                                article!.title ?? 'This article has no title',
                                 style: TextStyle(fontSize: 24.0),
                               ),
                               subtitle:
@@ -154,8 +154,8 @@ class _StarsPageState extends State<StarsPage> {
                                               CupertinoPageRoute(
                                                 builder: (context) =>
                                                     WebviewPage(
-                                                  by: article.by,
-                                                  url: article.url,
+                                                  title: article.title!,
+                                                  url: article.url!,
                                                 ),
                                               ),
                                             ),
@@ -167,7 +167,7 @@ class _StarsPageState extends State<StarsPage> {
                                             icon: Icon(Icons.share_outlined),
                                             color:
                                                 Theme.of(context).accentColor,
-                                            onPressed: () => Share.share(article.url),
+                                            onPressed: () => Share.share(article.url!),
                                           )
                                         : Container(),
                                     Padding(
@@ -175,7 +175,7 @@ class _StarsPageState extends State<StarsPage> {
                                           ? const EdgeInsets.all(0.0)
                                           : const EdgeInsets.all(16.0),
                                       child: article.descendants != null
-                                          ? Text(article.descendants > 1
+                                          ? Text(article.descendants! > 1
                                               ? '${article.descendants} comments'
                                               : '${article.descendants} comment')
                                           : Text('No comments'),
