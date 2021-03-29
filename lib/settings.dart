@@ -9,9 +9,7 @@ import 'theme_provider.dart';
 import 'auth.dart';
 
 /// A simple function to show the modal bottom sheet (NB: It's not a widget!)
-void showSettingsPage(
-    BuildContext context, ThemeProvider themeProvider, User user) {
-  final auth = Auth();
+void showSettingsPage(BuildContext context, ThemeProvider themeProvider, User user) {
 
   showModalBottomSheet(
     context: context,
@@ -51,11 +49,11 @@ void showSettingsPage(
                   ),
                   onTap: () async {
                     Navigator.of(context).pop();
-                    await auth.signIn();
+                    await Auth.signInWithGoogle();
 
                     final docRef = FirebaseFirestore.instance
                         .collection('users')
-                        .doc(user.uid);
+                        .doc(FirebaseAuth.instance.currentUser.uid);
                     final doc = await docRef.get();
 
                     if (!doc.exists) {
@@ -72,7 +70,7 @@ void showSettingsPage(
                   ),
                   title: const Text('Sign out'),
                   onTap: () async {
-                    await auth.signOut();
+                    await Auth.signOut();
                     Navigator.of(context).pop();
                   },
                 ),

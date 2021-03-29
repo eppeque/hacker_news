@@ -1,25 +1,66 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 /// Contains everything to handle Google Authentication
 class Auth {
-  final _googleSignIn = GoogleSignIn();
-  final _firebaseAuth = FirebaseAuth.instance;
+  static Future<void> signInWithGoogle({BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<void> signIn() async {
-    final googleSignInAccount = await _googleSignIn.signIn();
-    final googleAuth = await googleSignInAccount.authentication;
+    final GoogleSignIn googleSignIn = GoogleSignIn();
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
 
-    await _firebaseAuth.signInWithCredential(credential);
+    if (googleSignInAccount != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      try {
+        await auth.signInWithCredential(credential);
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'account-exists-with-different-credential') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            Auth.customSnackBar(content: 'The account already exists with a different credential.'),
+          );
+        }
+        else if (e.code == 'invalid-credential') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            Auth.customSnackBar(content: 'Error occured while accessing credentials. Try again.'),
+          );
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          Auth.customSnackBar(content: 'Error occured using Google Sign In. Try again.'),
+        );
+      }
+    }
   }
 
-  Future<void> signOut() async {
-    await _googleSignIn.disconnect();
-    _firebaseAuth.signOut();
+  static SnackBar customSnackBar({String content}) {
+    return SnackBar(
+      backgroundColor: Colors.black,
+      content: Text(
+        content,
+        style: TextStyle(color: Colors.red),
+      ),
+    );
+  }
+
+  static Future<void> signOut({BuildContext context}) async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    try {
+      await googleSignIn.disconnect();
+      await auth.signOut();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        Auth.customSnackBar(content: 'Error signing out. Try again.'),
+      );
+    }
   }
 }
