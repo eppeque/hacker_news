@@ -105,7 +105,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: const Center(
         child: Icon(
           FontAwesomeIcons.hackerNewsSquare,
           color: Colors.deepOrange,
@@ -174,19 +174,19 @@ class _HomeState extends State<Home> {
           drawer: Drawer(
             child: ListView(
               children: [
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         FontAwesomeIcons.hackerNewsSquare,
                         size: 30.0,
                         color: Colors.deepOrange,
                       ),
-                      SizedBox(width: 10.0),
-                      Text(
+                      const SizedBox(width: 10.0),
+                      const Text(
                         'Hacker News',
                         style: TextStyle(
                           fontSize: 20.0,
@@ -196,7 +196,7 @@ class _HomeState extends State<Home> {
                     ],
                   ),
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 userSnapshot.data != null
                     ? ListTile(
                         leading: const Icon(Icons.star_border),
@@ -256,11 +256,11 @@ class _HomeState extends State<Home> {
               });
             },
             items: [
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.arrow_drop_up),
                 label: 'Top Stories',
               ),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                 icon: Icon(Icons.new_releases_outlined),
                 label: 'New Stories',
               ),
@@ -321,7 +321,7 @@ class _HomeState extends State<Home> {
                   article.url != null
                       ? IconButton(
                           tooltip: 'Read full article',
-                          icon: Icon(Icons.launch),
+                          icon: const Icon(Icons.launch),
                           color: Theme.of(context).accentColor,
                           onPressed: () => Navigator.of(context).push(
                             CupertinoPageRoute(
@@ -336,7 +336,7 @@ class _HomeState extends State<Home> {
                   article.url != null
                       ? IconButton(
                           tooltip: 'Share the article',
-                          icon: Icon(Icons.share_outlined),
+                          icon: const Icon(Icons.share_outlined),
                           color: Theme.of(context).accentColor,
                           onPressed: () => Share.share(article.url!),
                         )
@@ -349,7 +349,7 @@ class _HomeState extends State<Home> {
                         ? Text(article.descendants! > 1
                             ? '${article.descendants} comments'
                             : '${article.descendants} comment')
-                        : Text('No comments'),
+                        : const Text('No comments'),
                   ),
                 ],
               ),
@@ -397,7 +397,7 @@ class SearchPage extends SearchDelegate {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
           return Center(
-            child: CircularProgressIndicator(),
+            child: const CircularProgressIndicator(),
           );
         final searchedArticles = snapshot.data!
             .where((article) =>
@@ -434,7 +434,7 @@ class SearchPage extends SearchDelegate {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
           return Center(
-            child: CircularProgressIndicator(),
+            child: const CircularProgressIndicator(),
           );
         final searchedArticles = snapshot.data!
             .where((article) =>

@@ -18,7 +18,7 @@ class ThemeProvider with ChangeNotifier {
   }
 }
 
-final _blue = Color(0xFF4885ed);
+const _blue = Color(0xFF4885ed);
 
 final darkTheme = ThemeData(
   brightness: Brightness.dark,

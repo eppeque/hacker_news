@@ -24,12 +24,12 @@ class NoNetwork extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Text(
+              child: const Text(
                 'It looks like you\'re offline.',
                 style: TextStyle(fontSize: 24.0),
               ),
             ),
-            Text('Be online and restart the app!')
+            const Text('Be online and restart the app!')
           ],
         ),
       ),

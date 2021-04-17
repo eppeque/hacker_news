@@ -83,7 +83,7 @@ void showSettingsPage(BuildContext context, ThemeProvider themeProvider, User? u
             applicationVersion: '1.0.0',
             applicationLegalese:
                 'This app is developed by Quentin Eppe and uses the Hacker News API. All Rights Reserved.',
-            applicationIcon: Icon(
+            applicationIcon: const Icon(
               FontAwesomeIcons.hackerNewsSquare,
               color: Colors.deepOrange,
             ),

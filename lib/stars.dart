@@ -53,28 +53,28 @@ class _StarsPageState extends State<StarsPage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting)
             return Center(
-              child: CircularProgressIndicator(),
+              child: const CircularProgressIndicator(),
             );
           return FutureBuilder<List<Article?>>(
             future: _getArticles(List<int>.from(snapshot.data!['stars'])),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting)
                 return Center(
-                  child: CircularProgressIndicator(),
+                  child: const CircularProgressIndicator(),
                 );
               if (snapshot.data!.isEmpty)
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star,
                         color: Colors.yellow,
                         size: 50.0,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: Text(
+                        child: const Text(
                           'You have no stars yet',
                           style: TextStyle(fontSize: 24.0),
                           textAlign: TextAlign.center,
@@ -146,7 +146,7 @@ class _StarsPageState extends State<StarsPage> {
                                     article.url != null
                                         ? IconButton(
                                             tooltip: 'Read full article',
-                                            icon: Icon(Icons.launch),
+                                            icon: const Icon(Icons.launch),
                                             color:
                                                 Theme.of(context).accentColor,
                                             onPressed: () =>
@@ -164,7 +164,7 @@ class _StarsPageState extends State<StarsPage> {
                                     article.url != null
                                         ? IconButton(
                                             tooltip: 'Share the article',
-                                            icon: Icon(Icons.share_outlined),
+                                            icon: const Icon(Icons.share_outlined),
                                             color:
                                                 Theme.of(context).accentColor,
                                             onPressed: () => Share.share(article.url!),
