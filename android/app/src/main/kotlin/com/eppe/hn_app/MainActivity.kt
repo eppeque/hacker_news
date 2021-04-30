@@ -1,4 +1,4 @@
-package com.eppe.hacker_news
+package com.eppe.hn_app
 
 import io.flutter.embedding.android.FlutterActivity
 
