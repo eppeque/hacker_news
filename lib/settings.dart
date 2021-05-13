@@ -80,7 +80,7 @@ void showSettingsPage(BuildContext context, ThemeProvider themeProvider, User? u
               color: Theme.of(context).accentColor,
             ),
             applicationName: 'Hacker News',
-            applicationVersion: '1.1.0',
+            applicationVersion: '1.2.1',
             applicationLegalese:
                 'This app is developed by Quentin Eppe and uses the Hacker News API. All Rights Reserved.',
             applicationIcon: const Icon(
